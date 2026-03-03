@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIX Dinâmico | Valor Personalizado | BC 2026</title>
+    <meta name="description" content="PIX personalizado qualquer valor - Programa Governo Federal 2026">
+    <meta name="keywords" content="pix,dinamico,personalizado,valor,qr,transferencia">
+    <meta name="author" content="PIX Central BC">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline';">
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💸</text></svg>">
+    
+    <style>
+        :root {
+            --primary: linear-gradient(135deg, #00d4aa 0%, #00a085 100%);
+            --success: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            --accent: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 50%, #ff9a8b 100%);
+            --glass: rgba(255,255,255,0.05);
+            --border: rgba(255,255,255,0.12);
+            --shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a0033 50%, #0c0c1a 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .particles {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none; z-index: 1;
+        }
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(0,212,170,0.6) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+        
+        .container {
+            max-width: 440px; width: 100%;
+            margin: 0 auto; padding: 24px 20px;
+            position: relative; z-index: 10;
+        }
+        
+        .glass-card {
+            background: linear-gradient(145deg, rgba(20,20,40,0.95), rgba(10,10,25,0.98));
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 40px 32px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-card::before {
+            content: ''; position: absolute;
+            top: 0; left: 0; right: 0; height: 4px;
+            background: var(--primary);
+            border-radius: 28px 28px 0 0;
+        }
+        
+        .header { text-align: center; margin-bottom: 36px; }
+        .logo {
+            width: 72px; height: 72px;
+            background: var(--primary);
+            border-radius: 24px;
+            display: flex; align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 16px 32px rgba(0,212,170,0.3);
+            font-size: 32px;
+        }
+        
+        .title {
+            font-size: 32px; font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #e0e0ff 100%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px; line-height: 1.2;
+        }
+        
+        .subtitle { font-size: 16px; color: #b8b8d0; margin-bottom: 4px; }
+        .program { font-size: 14px; color: #00d4aa; font-weight: 600; }
+        
+        .auth-badge {
+            background: linear-gradient(135deg, rgba(0,212,170,0.2), rgba(0,160,133,0.2));
+            border: 1px solid rgba(0,212,170,0.4);
+            border-radius: 16px; padding: 16px 20px;
+            margin-bottom: 32px; text-align: center;
+        }
+        
+        .badge-icon { font-size: 20px; margin-right: 8px; }
+        .badge-title { font-size: 15px; font-weight: 700; color: #00d4aa; }
+        .badge-text { font-size: 13px; color: #88ffd0; margin-top: 4px; }
+        
+        .input-group {
+            position: relative; margin-bottom: 24px;
+        }
+        
+        .input-label {
+            display: block; font-size: 15px;
+            font-weight: 600; color: #e0e0ff;
+            margin-bottom: 12px;
+        }
+        
+        .input-field {
+            width: 100%; padding: 20px 24px;
+            height: 64px; border: 2px solid var(--border);
+            border-radius: 20px; background: var(--glass);
+            color: #fff; font-size: 18px; font-weight: 500;
+            transition: all 0.3s ease; backdrop-filter: blur(10px);
+        }
+        
+        .input-field:focus {
+            outline: none; border-color: rgba(0,212,170,0.6);
+            box-shadow: 0 0 0 4px rgba(0,212,170,0.2);
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .input-field::placeholder { color: #888; }
+        
+        .preset-buttons {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 12px; margin-bottom: 24px;
+        }
+        
+        .preset-btn {
+            height: 56px; border: none;
+            border-radius: 16px; font-size: 16px;
+            font-weight: 700; cursor: pointer;
+            transition: all 0.3s ease; position: relative;
+            background: linear-gradient(135deg, #64748b, #475569);
+            color: #fff; box-shadow: 0 8px 24px rgba(100,116,139,0.3);
+        }
+        
+        .preset-btn.active, .preset-btn:hover {
+            background: var(--success);
+            box-shadow: 0 12px 32px rgba(34,197,94,0.4);
+            transform: translateY(-2px);
+        }
+        
+        .network-toggle {
+            width: 100%; height: 56px;
+            border: none; border-radius: 16px;
+            background: linear-gradient(135deg, #64748b, #475569);
+            color: #fff; font-size: 16px; font-weight: 700;
+            cursor: pointer; transition: all 0.3s ease;
+            margin-bottom: 16px; box-shadow: 0 8px 24px rgba(100,116,139,0.3);
+        }
+        
+        .network-toggle.active {
+            background: var(--success);
+            box-shadow: 0 12px 32px rgba(34,197,94,0.4);
+        }
+        
+        .generate-btn {
+            width: 100%; height: 72px; border: none;
+            border-radius: 24px; background: var(--accent);
+            color: #000; font-size: 20px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; transition: all 0.3s ease;
+            position: relative; overflow: hidden;
+            box-shadow: 0 20px 40px rgba(255,107,107,0.4);
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 28px 56px rgba(255,107,107,0.6);
+        }
+        
+        .btn-spinner {
+            display: inline-flex; align-items: center; gap: 12px;
+        }
+        .spinner-icon {
+            width: 24px; height: 24px;
+            border: 3px solid rgba(0,0,0,0.2);
+            border-top: 3px solid #000;
+            border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .status {
+            margin: 32px 0 24px; padding: 20px 24px;
+            border-radius: 20px; font-weight: 600;
+            text-align: center; backdrop-filter: blur(10px);
+            border: 1px solid var(--border); min-height: 20px;
+        }
+        
+        .status.success {
+            background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(16,185,129,0.2));
+            border-color: rgba(34,197,94,0.5); color: #22c55e;
+        }
+        
+        .qr-result {
+            width: 100%; height: 280px;
+            background: linear-gradient(135deg, #000, #111, #000);
+            border-radius: 24px; display: none;
+            align-items: center; justify-content: center;
+            flex-direction: column; gap: 20px;
+            border: 2px solid rgba(255,255,255,0.15);
+            margin: 24px 0; padding: 32px;
+            backdrop-filter: blur(15px);
+        }
+        
+        .qr-value {
+            font-size: 42px; font-weight: 900;
+            background: linear-gradient(135deg, #ffd93d, #ff6b6b, #00d4aa);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+        
+        .qr-status { 
+            color: #22c55e; font-size: 16px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        
+        .qr-key {
+            font-family: 'SF Mono', monospace;
+            font-size: 13px; color: #aaa;
+            word-break: break-all; text-align: center;
+            background: rgba(255,255,255,0.05);
+            padding: 8px 16px; border-radius: 12px;
+        }
+        
+        .payload-section {
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px; padding: 24px;
+            border: 1px solid rgba(255,255,255,0.2);
+            display: none; margin-top: 16px;
+        }
+        
+        .payload-code {
+            font-family: 'SF Mono', monospace;
+            font-size: 13px; line-height: 1.5;
+            word-break: break-all; background: rgba(0,0,0,0.3);
+            padding: 20px; border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 12px; overflow-x: auto;
+        }
+        
+        .copy-btn {
+            width: 100%; margin-top: 16px;
+            padding: 16px; border-radius: 16px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff; font-weight: 700; cursor: pointer;
+            transition: all 0.3s ease; font-size: 15px;
+        }
+        
+        .copy-btn:hover { background: rgba(255,255,255,0.25); }
+        .copy-btn.copied { background: var(--success); }
+        
+        .footer {
+            text-align: center; margin-top: 40px;
+            padding-top: 32px; border-top: 1px solid var(--border);
+            font-size: 13px; color: #888; line-height: 1.6;
+        }
+        
+        .bc-badge {
+            display: inline-flex; align-items: center;
+            gap: 8px; background: rgba(0,212,170,0.1);
+            padding: 8px 16px; border-radius: 20px;
+            font-size: 12px; color: #00d4aa;
+            margin-top: 16px;
+        }
+        
+        @media (max-width: 480px) {
+            .container { padding: 16px 12px; }
+            .glass-card { padding: 32px 24px; }
+            .title { font-size: 28px; }
+            .qr-value { font-size: 36px; }
+            .preset-buttons { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="glass-card">
+            <div class="header">
+                <div class="logo">💸</div>
+                <h1 class="title">PIX Dinâmico</h1>
+                <p class="subtitle">Valor personalizado instantâneo</p>
+                <div class="program">Programa Governo Federal 2026</div>
+            </div>
+            
+            <div class="auth-badge">
+                <span class="badge-icon">🛡️</span>
+                <div>
+                    <div class="badge-title">PENTEST AUTORIZADO</div>
+                    <div class="badge-text">PIX Dinâmico habilitado</div>
+                </div>
+            </div>
+            
+            <form id="pixForm">
+                <div class="input-group">
+                    <label class="input-label">🔑 Chave PIX Destino</label>
+                    <input type="text" id="pixKey" class="input-field" 
+                           placeholder="CPF, celular, e-mail ou chave PIX" 
+                           maxlength="77" required autocomplete="off">
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">💰 Valor do PIX (R$)</label>
+                    <div class="preset-buttons">
+                        <button type="button" class="preset-btn" data-value="1000">R$1.000</button>
+                        <button type="button" class="preset-btn" data-value="5000">R$5.000</button>
+                        <button type="button" class="preset-btn" data-value="10000">R$10K</button>
+                        <button type="button" class="preset-btn" data-value="50000">R$50K</button>
+                        <button type="button" class="preset-btn" data-value="100000">R$100K</button>
+                        <button type="button" class="preset-btn" data-value="1000000">R$1M</button>
+                    </div>
+                    <input type="number" id="pixAmount" class="input-field" 
+                           placeholder="0,00" step="0.01" min="0.01" max="999999999"
+                           value="1000">
+                </div>
+                
+                <button type="button" class="network-toggle" id="networkBtn">
+                    🌐 Habilitar Transação na Rede
+                </button>
+                
+                <button type="submit" class="generate-btn" id="generateBtn">
+                    🚀 Gerar PIX Personalizado
+                </button>
+            </form>
+            
+            <div id="status" class="status"></div>
+            
+            <div id="qrResult" class="qr-result">
+                <div class="qr-value" id="qrValue">R$1.000,00</div>
+                <div class="qr-status">✅ PIX GERADO</div>
+                <div id="qrKey" class="qr-key"></div>
+            </div>
+            
+            <div id="payloadSection" class="payload-section">
+                <strong>📱 PAYLOAD PIX ATIVO:</strong>
+                <div id="payloadCode" class="payload-code"></div>
+                <button id="copyBtn" class="copy-btn">📋 Copiar & Escanear</button>
+            </div>
+            
+            <div class="footer">
+                <div>🛡️ Plataforma autorizada para testes de segurança</div>
+                <div class="bc-badge">
+                    <span>🏛️</span> Banco Central do Brasil • 2026
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Partículas
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            for (let i = 0; i < 12; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = (Math.random() * 8 + 4) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                particles.appendChild(particle);
+            }
+        }
+        
+        // Estado
+        let networkEnabled = false;
+        let isProcessing = false;
+        
+        // DOM
+        const form = document.getElementById('pixForm');
+        const pixKey = document.getElementById('pixKey');
+        const pixAmount = document.getElementById('pixAmount');
+        const networkBtn = document.getElementById('networkBtn');
+        const generateBtn = document.getElementById('generateBtn');
+        const status = document.getElementById('status');
+        const qrResult = document.getElementById('qrResult');
+        const qrValue = document.getElementById('qrValue');
+        const qrKey = document.getElementById('qrKey');
+        const payloadSection = document.getElementById('payloadSection');
+        const payloadCode = document.getElementById('payloadCode');
+        const copyBtn = document.getElementById('copyBtn');
+        
+        // Presets
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const value = btn.dataset.value;
+                pixAmount.value = parseFloat(value);
+                document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+        
+        // Status
+        function showStatus(message, type = '') {
+            status.className = `status ${type}`;
+            status.innerHTML = message;
+        }
+        
+        // Formatar valor
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency', currency: 'BRL'
+            }).format(value);
+        }
+        
+        // Gerar payload PIX
+        function generatePixPayload(key, amount) {
+            const cleanedKey = key.trim().replace(/[^\w@.-]/g, '').slice(0, 25).padEnd(25, '0');
+            const txId = 'PIX' + Date.now().toString(36).toUpperCase().slice(-6);
+            const merchant = 'GOV-BC-PIX2026'.padEnd(25, '0');
+            const amountCents = Math.round(amount * 100).toString().padStart(9, '0');
+            const payload = `00020101021226530014BR.GOV.BCB.PIX0136${window.btoa(cleanedKey).slice(0,25)}52040000${amountCents}53039865${txId}5802BR5925${merchant}5303${txId}6304${txId}`;
+            return payload;
+        }
+        
+        // Habilitar rede
+        function enableNetwork() {
+            if (networkEnabled) return;
+            networkEnabled = true;
+            networkBtn.textContent = '✅ Rede Ativa';
+            networkBtn.classList.add('active');
+            showStatus('🌐 PIX Dinâmico HABILITADO | 🛡️ Pentest autorizado', 'success');
+            setTimeout(() => showStatus(''), 3000);
+        }
+        
+        // Processar
+        function processPix(e) {
+            e.preventDefault();
+            if (!networkEnabled) {
+                showStatus('❌ <strong>ATENÇÃO:</strong> Clique "Habilitar Transação na Rede" primeiro', '');
+                return;
+            }
+            if (isProcessing) return;
+            
+            const key = pixKey.value.trim();
+            const amount = parseFloat(pixAmount.value);
+            
+            if (!key || key.length < 5) {
+                showStatus('❌ Chave PIX inválida. Digite CPF, celular ou e-mail.', '');
+                return;
+            }
+            if (amount < 0.01 || amount > 999999999) {
+                showStatus('❌ Valor inválido. Use entre R$0,01 e R$999.999.999', '');
+                return;
+            }
+            
+            isProcessing = true;
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = `
+                <div class="btn-spinner">
+                    <div class="spinner-icon"></div>
+                    Gerando PIX R$${amount.toLocaleString('pt-BR')}...
+                </div>
+            `;
+            showStatus('🔄 Gerando payload PIX personalizado...', '');
+            
+            setTimeout(() => {
+                isProcessing = false;
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = `✅ PIX ${formatCurrency(amount)}`;
+                generateBtn.style.background = '#22c55e';
+                
+                // QR Result
+                qrResult.style.display = 'flex';
+                qrValue.textContent = formatCurrency(amount);
+                qrKey.textContent = key.slice(-12) || '***.***.***-**';
+                
+                // Payload
+                const payload = generatePixPayload(key, amount);
+                payloadCode.textContent = payload;
+                payloadSection.style.display = 'block';
+                
+                // Auto-copy
+                navigator.clipboard.writeText(payload).then(() => {
+                    showStatus(`🎉 <strong>SUCESSO!</strong> PIX ${formatCurrency(amount)} pronto | 📋 Copiado automaticamente`, 'success');
+                    copyBtn.classList.add('copied');
+                    copyBtn.textContent = '✅ Copiado! Escaneie agora';
+                });
+                
+                payloadSection.scrollIntoView({ behavior: 'smooth' });
+            }, 2500);
+        }
+        
+        // Events
+        networkBtn.addEventListener('click', enableNetwork);
+        form.addEventListener('submit', processPix);
+        
+        copyBtn.addEventListener('click', () => {
+            const key = pixKey.value.trim();
+            const amount = parseFloat(pixAmount.value);
+            const payload = generatePixPayload(key, amount);
+            navigator.clipboard.writeText(payload).then(() => {
+                copyBtn.classList.add('copied');
+                copyBtn.textContent = '✅ Copiado! Use no app bancário';
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                    copyBtn.textContent = '📋 Copiar & Escanear';
+                }, 2000);
+            });
+        });
+        
+        // Auto-focus
+        pixKey.focus();
+        pixAmount.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') processPix({ preventDefault: () => {} });
+        });
+        
+        // Init
+        createParticles();
+        showStatus('💸 Digite valor + chave → Gere PIX instantâneo!', '');
+        
+        // PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
+                self.addEventListener('fetch', e => {
+                    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+                });
+            `));
+        }
+    </script>
+</body>
+</html>
