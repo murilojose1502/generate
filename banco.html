@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banco PIX Pro - Plataforma Profissional</title>
+    <style>
+        :root {
+            --primary: #1e40af;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1f2937;
+            --light: #f9fafb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+            min-height: 100vh;
+            color: #1f2937;
+        }
+
+        .header {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            padding: 20px 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--primary), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .modo-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--light);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+
+        .toggle-btn {
+            padding: 8px 16px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            background: var(--success);
+            color: white;
+            box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+        }
+
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+        }
+
+        .painel-principal {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        .saldo-card {
+            background: linear-gradient(135deg, var(--success), #059669);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .saldo-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.5; }
+        }
+
+        .saldo-value {
+            font-size: 48px;
+            font-weight: 900;
+            margin: 20px 0;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--success);
+            box-shadow: 0 0 0 4px rgba(16,185,129,0.1);
+            transform: translateY(-1px);
+        }
+
+        .btn {
+            padding: 18px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--success), #059669);
+            color: white;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(16,185,129,0.4);
+        }
+
+        .painel-rede {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            height: 100%;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #f1f5f9;
+        }
+
+        .card h3 {
+            margin-bottom: 16px;
+            color: var(--dark);
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .network-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: var(--light);
+            border-radius: 12px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        .status-dot.online { background: var(--success); }
+        .status-dot.offline { background: var(--danger); animation: none; }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .historico {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .transacao {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            margin-bottom: 12px;
+            background: var(--light);
+            border-radius: 12px;
+            border-left: 4px solid var(--success);
+            transition: all 0.3s ease;
+        }
+
+        .transacao:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .transacao.saida { border-left-color: var(--danger); }
+
+        .status-message {
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .status.sucesso { background: rgba(16,185,129,0.1); color: var(--success); border: 1px solid rgba(16,185,129,0.2); }
+        .status.erro { background: rgba(239,68,68,0.1); color: var(--danger); border: 1px solid rgba(239,68,68,0.2); }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+        }
+
+        .modo-pro {
+            display: none;
+        }
+
+        .modo-pro.active {
+            display: block;
+        }
+
+        .modo-basico.active {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">🏦 Banco PIX Pro</div>
+            <div class="modo-toggle">
+                <button class="toggle-btn active" data-modo="basico">Básico</button>
+                <button class="toggle-btn" data-modo="pro">Profissional</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="painel-principal">
+            <!-- MODO BÁSICO -->
+            <div id="modoBasico" class="modo-basico active">
+                <div class="saldo-card">
+                    <h2>💰 Saldo Disponível</h2>
+                    <div class="saldo-value" id="saldo">R$ 1.000.000.000,00</div>
+                </div>
+
+                <form id="formPixBasico">
+                    <div class="form-group">
+                        <label>🔗 Chave PIX</label>
+                        <input type="text" id="chavePix" placeholder="11999999999 | email@exemplo.com | CPF/CNPJ" required>
+                    </div>
+                    <div class="form-group">
+                        <label>🏦 Banco</label>
+                        <select id="banco" required>
+                            <option value="">Selecione...</option>
+                            <option value="itau">Itaú</option>
+                            <option value="nubank">Nubank</option>
+                            <option value="bb">Banco do Brasil</option>
+                            <option value="bradesco">Bradesco</option>
+                            <option value="inter">Banco Inter</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>💵 Valor (R$)</label>
+                        <input type="number" id="valor" step="0.01" min="0.01" placeholder="1000,00" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">🚀 Transferir PIX</button>
+                </form>
+            </div>
+
+            <!-- MODO PROFISSIONAL -->
+            <div id="modoPro" class="modo-pro">
+                <div class="saldo-card">
+                    <h2>💰 Saldo Corporativo</h2>
+                    <div class="saldo-value" id="saldoPro">R$ 1.000.000.000,00</div>
+                    <div style="margin-top: 20px; opacity: 0.9;">
+                        <small>🌐 Conectado via <span id="dnsAtual">dns.google</span></small>
+                    </div>
+                </div>
+
+                <form id="formPixPro">
+                    <div class="form-group">
+                        <label>🌐 DNS Personalizado</label>
+                        <input type="text" id="dnsCustom" placeholder="8.8.8.8 | 1.1.1.1 | custom.dns.br" value="8.8.8.8">
+                    </div>
+                    <div class="form-group">
+                        <label>🔗 Chave PIX Destino</label>
+                        <input type="text" id="chavePixPro" placeholder="Chave PIX completa" required>
+                    </div>
+                    <div class="form-group">
+                        <label>🏦 Instituição Financeira (ISP)</label>
+                        <select id="bancoPro" required>
+                            <option value="">Selecione...</option>
+                            <option value="itau">033 - Itaú</option>
+                            <option value="bb">001 - Banco do Brasil</option>
+                            <option value="bradesco">237 - Bradesco</option>
+                            <option value="nubank">260 - Nubank</option>
+                            <option value="inter">077 - Inter</option>
+                            <option value="santander">033 - Santander</option>
+                            <option value="caixa">104 - Caixa</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>💵 Valor da Transferência</label>
+                        <input type="number" id="valorPro" step="0.01" min="0.01" placeholder="50000,00" required>
+                    </div>
+                    <div class="form-group">
+                        <label>📝 Descrição (Opcional)</label>
+                        <textarea id="descricao" rows="2" placeholder="Pagamento fornecedor XYZ..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">🔄 Executar Transferência via Rede PIX</button>
+                </form>
+            </div>
+
+            <div id="status" class="status-message" style="display: none;"></div>
+        </div>
+
+        <div class="painel-rede">
+            <div class="card">
+                <h3>🌐 Status da Rede</h3>
+                <div class="network-status">
+                    <div class="status-dot online" id="statusDot"></div>
+                    <span id="statusTexto">Online - DNS: 8.8.8.8</span>
+                </div>
+                <div style="font-size: 12px; color: #6b7280;">
+                    Latência: <span id="latencia">23ms</span> | Uptime: <span id="uptime">99.9%</span>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📊 Histórico Recente</h3>
+                <div class="historico" id="historico"></div>
+            </div>
+
+            <div class="card">
+                <h3>⚙️ Configurações</h3>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <button class="btn" style="flex: 1; background: var(--warning); color: white; font-size: 14px;" onclick="resetSaldo()">
+                        🔄 Reset Saldo
+                    </button>
+                    <button class="btn" style="flex: 1; background: var(--primary); color: white; font-size: 14px;" onclick="exportarDados()">
+                        📤 Exportar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class PixPro {
+            constructor() {
+                this.saldo = 1000000000.00;
+                this.transacoes = [];
+                this.modoAtual = 'basico';
+                this.dnsAtual = '8.8.8.8';
+                
+                this.init();
+            }
+
+            init() {
+                this.cacheElements();
+                this.bindEvents();
+                this.atualizarInterface();
+                this.simularRede();
+            }
+
+            cacheElements() {
+                this.saldoEl = document.getElementById('saldo');
+                this.saldoProEl = document.getElementById('saldoPro');
+                this.historicoEl = document.getElementById('historico');
+                this.statusEl = document.getElementById('status');
+                this.dnsAtualEl = document.getElementById('dnsAtual');
+                this.statusTextoEl = document.getElementById('statusTexto');
+                this.statusDotEl = document.getElementById('statusDot');
+                this.latenciaEl = document.getElementById('latencia');
+            }
+
+            bindEvents() {
+                // Toggle modo
+                document.querySelectorAll('.toggle-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        this.modoAtual = e.target.dataset.modo;
+                        this.toggleModo();
+                    });
+                });
+
+                // Formulários
+                document.getElementById('formPixBasico').addEventListener('submit', (e) => this.processarPixBasico(e));
+                document.getElementById('formPixPro').addEventListener('submit', (e) => this.processarPixPro(e));
+            }
+
+            toggleModo() {
+                document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelector(`[data-modo="${this.modoAtual}"]`).classList.add('active');
+                
+                document.getElementById('modoBasico').classList.toggle('active', this.modoAtual === 'basico');
+                document.getElementById('modoBasico').classList.toggle('modo-basico', this.modoAtual !== 'basico');
+                document.getElementById('modoPro').classList.toggle('active', this.modoAtual === 'pro');
+                
+                this.atualizarInterface();
+            }
+
+            atualizarInterface() {
+                const saldoEl = this.modoAtual === 'basico' ? this.saldoEl : this.saldoProEl;
+                saldoEl.textContent = this.formatarMoeda(this.saldo);
+                this.dnsAtualEl.textContent = this.dnsAtual;
+                this.renderizarHistorico();
+            }
+
+            formatarMoeda(valor) {
+                return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor);
+            }
+
+            simularRede() {
+                setInterval(() => {
+                    const latencia = Math.floor(Math.random() * 50) + 10;
+                    this.latenciaEl.textContent = `${latencia}ms`;
+                    
+                    // Simular variação DNS
+                    const dnsList = ['8.8.8.8', '1.1.1.1', '208.67.222.222', 'custom.dns.br'];
+                    if (Math.random() > 0.95) {
+                        this.dnsAtual = dnsList[Math.floor(Math.random() * dnsList.length)];
+                        this.dnsAtualEl.textContent = this.dnsAtual;
+                        this.statusTextoEl.textContent = `Online - DNS: ${this.dnsAtual}`;
+                    }
+                }, 3000);
+            }
+
+            async processarPixBasico(e) {
+                e.preventDefault();
+                await this.executarTransferencia('basico');
+            }
+
+            async processarPixPro(e) {
+                e.preventDefault();
+                this.dnsAtual = document.getElementById('dnsCustom').value || '8.8.8.8';
+                await this.executarTransferencia('pro');
+            }
+
+            async executarTransferencia(modo) {
+                const formId = modo === 'basico' ? 'formPixBasico' : 'formPixPro';
+                const form = document.getElementById(formId);
+                const formData = new FormData(form);
+                
+                const chave = document.getElementById(modo === 'basico' ? 'chavePix' : 'chavePixPro').value;
+                const banco = document.getElementById(modo === 'basico' ? 'banco' : 'bancoPro').value;
+                const valor = parseFloat(document.getElementById(modo === 'basico' ? 'valor' : 'valorPro').value);
+                
+                const taxa = (valor * 0.0038) + 0.10;
+                const total = valor + taxa;
+
+                if (total > this.saldo) {
+                    this.mostrarStatus('erro', `❌ Saldo insuficiente. Disponível: ${this.formatarMoeda(this.saldo)}`);
+                    return;
+                }
+
+                // Simular delay de rede real
+                this.mostrarStatus('sucesso', `⏳ Processando via ${this.dnsAtual}... Taxa: ${this.formatarMoeda(taxa)}`);
+                
+                const delay = Math.random() * 3000 + 1000;
+                await new Promise(r => setTimeout(r, delay));
+
+                this.saldo -= total;
+                this.adicionarTransacao({
+                    tipo: 'PIX Corporativo',
+                    chave,
+                    banco,
+                    valor,
+                    taxa,
+                    total,
+                    dns: this.dnsAtual,
+                    modo,
+                    data: new Date().toLocaleString('pt-BR')
+                });
+
+                this.mostrarStatus('sucesso', `✅ Transferência concluída! ID: ${Date.now()}`);
+                form.reset();
+                this.atualizarInterface();
+            }
+
+            adicionarTransacao(transacao) {
+                this.transacoes.unshift(transacao);
+                if (this.transacoes.length > 15) this.transacoes.pop();
+            }
+
+            renderizarHistorico() {
+                this.historicoEl.innerHTML = this.transacoes.map(t => `
+                    <div class="transacao ${t.tipo.includes('Enviado') ? 'saida' : ''}">
+                        <div>
+                            <div style="font-weight: 700; margin-bottom: 4px;">${t.tipo}</div>
+                            <div style="font-size: 13px; color: #6b7280;">
+                                ${t.chave} • ${t.banco} • ${this.formatarMoeda(t.valor)}
+                            </div>
+                            <div style="font-size: 11px; color: #9ca3af;">${t.dns} • ${t.data}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: 700;">${this.formatarMoeda(t.total)}</div>
+                            <div style="font-size: 11px; color: var(--success);">✅ OK</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            mostrarStatus(tipo, mensagem) {
+                this.statusEl.className = `status-message status ${tipo}`;
+                this.statusEl.innerHTML = mensagem;
+                this.statusEl.style.display = 'block';
+                setTimeout(() => {
+                    this.statusEl.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Global functions
+        function resetSaldo() {
+            pixPro.saldo = 1000000000.00;
+            pixPro.transacoes = [];
+            pixPro.atualizarInterface();
+            alert('💰 Saldo resetado para R$ 1.000.000.000,00');
+        }
+
+        function exportarDados() {
+            const dados = {
+                saldo: pixPro.saldo,
+                transacoes: pixPro.transacoes,
+                timestamp: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(dados, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `pix_export_${Date.now()}.json`;
+            a.click();
+        }
+
+        // Inicializar aplicação
+        const pixPro = new PixPro();
+    </script>
+</body>
+</html>
