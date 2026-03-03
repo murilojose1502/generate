@@ -1,1 +1,492 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PIX Emergencial 1.000.000</title><style>*,:after,:before{box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;background:linear-gradient(135deg,#0c0c1a 0%,#1a0033 100%);color:#fff;margin:0;padding:40px 20px;min-height:100vh;display:flex;align-items:center;justify-content:center}@media(max-width:768px){body{padding:20px}}.container{background:linear-gradient(145deg,rgba(20,20,40,.95),rgba(10,10,25,.98));backdrop-filter:blur(25px);border:1px solid rgba(255,255,255,.08);border-radius:28px;padding:40px;max-width:480px;width:100%;box-shadow:0 40px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1)}.header{display:flex;align-items:center;gap:16px;margin-bottom:32px}.icon{width:52px;height:52px;background:linear-gradient(135deg,#ff6b6b,#ffd93d);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;box-shadow:0 12px 24px rgba(255,107,107,.3)}.title{font-size:32px;font-weight:800;background:linear-gradient(135deg,#fff,#e0e0ff);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0 0 8px;line-height:1.2}.subtitle{font-size:16px;color:#b8b8d0;margin:0 0 36px;opacity:.9}.form-group{margin-bottom:28px}.label{display:block;font-size:15px;font-weight:600;color:#e0e0ff;margin-bottom:12px}.input{width:100%;padding:20px 24px;height:64px;border:2px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(255,255,255,.06);color:#fff;font-size:18px;font-weight:500;transition:all .3s ease;backdrop-filter:blur(10px)}.input:focus{outline:none;border-color:rgba(255,217,61,.6);box-shadow:0 0 0 4px rgba(255,217,61,.15);background:rgba(255,255,255,.1)}.input::placeholder{color:#888}.generate-btn{width:100%;height:68px;border:none;border-radius:20px;background:linear-gradient(135deg,#ff6b6b 0%,#ffd93d 50%,#ff9a8b 100%);color:#000;font-size:20px;font-weight:800;text-transform:uppercase;letter-spacing:1px;cursor:pointer;transition:all .3s ease;position:relative;overflow:hidden;box-shadow:0 16px 32px rgba(255,107,107,.4)}.generate-btn:hover{transform:translateY(-4px);box-shadow:0 24px 48px rgba(255,107,107,.6)}.generate-btn:active{transform:translateY(-2px)}.generate-btn:disabled{opacity:.7;cursor:not-allowed;transform:none}.spinner{display:inline-flex;align-items:center;gap:12px}.spinner-icon{width:24px;height:24px;border:3px solid rgba(0,0,0,.2);border-top:3px solid #000;border-radius:50%;animation:spin 1s linear infinite}.pulse{animation:pulse 2s infinite}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}.status{margin:32px 0 24px;padding:20px 24px;border-radius:20px;font-weight:600;text-align:center;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1)}.success{background:linear-gradient(135deg,rgba(34,197,94,.2),rgba(16,185,129,.2));border-color:rgba(34,197,94,.4);color:#22c55e}.qr-container{width:100%;height:240px;background:linear-gradient(135deg,#000,#111,#000);border-radius:20px;display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;border:2px solid rgba(255,255,255,.15);margin:24px 0;padding:24px;backdrop-filter:blur(10px)}.qr-text{font-size:36px;font-weight:800;background:linear-gradient(135deg,#ffd93d,#ff6b6b);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:0}.qr-key{font-family:monospace;font-size:12px;color:#aaa;word-break:break-all;text-align:center}.payload-box{background:rgba(0,0,0,.4);border-radius:16px;padding:20px;font-family:'Courier New',monospace;font-size:13px;word-break:break-all;line-height:1.5;border:1px solid rgba(255,255,255,.2);display:none;margin-top:16px}.copy-btn{width:100%;margin-top:16px;padding:14px;border-radius:16px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;font-weight:600;cursor:pointer;transition:all .2s}.copy-btn:hover{background:rgba(255,255,255,.25)}.footer{font-size:13px;color:#888;text-align:center;margin-top:36px;padding-top:28px;border-top:1px solid rgba(255,255,255,.08);line-height:1.5}</style></head><body><div class="container"><div class="header"><div class="icon">💰</div></div><h1 class="title">PIX Emergencial</h1><p class="subtitle">Liberação imediata de R$1.000.000,00<br><small>Programa governo federal 2026</small></p><form id="form"><div class="form-group"><label class="label">🔑 Chave PIX Principal</label><input type="text" id="key" class="input" placeholder="CPF / Celular / E-mail / Chave completa" maxlength="77" required></div><button type="submit" class="generate-btn" id="btn">🚀 Gerar 1 Milhão Agora</button></form><div id="status"></div><div id="qr" class="qr-container"><div class="qr-text">R$1.000.000</div><div>PIX INSTANTÂNEO</div><div id="qrkey" class="qr-key"></div></div><div id="payload" class="payload-box"></div><button class="copy-btn" id="copy" style="display:none">📋 Copiar PIX (1 clique)</button><div class="footer">✅ Autorizado pelo Banco Central do Brasil<br>🔒 Conexão segura • Processamento em 3s</div></div><script>const f=document.getElementById('form'),k=document.getElementById('key'),b=document.getElementById('btn'),s=document.getElementById('status'),q=document.getElementById('qr'),qk=document.getElementById('qrkey'),p=document.getElementById('payload'),c=document.getElementById('copy'),processing=false;function e(t,m){s.innerHTML=`<div class="status ${m||''}">${t}</div>`}function g(){const k1=k.value.trim().replace(/[^\w@.-]/g,''),i=Math.random().toString(36).substr(2,28).padEnd(32,'0'),v=1000000,tid='A'+Date.now().toString(36).toUpperCase(),mch='GOV-BR-PIX2026',emv=`00020101021226${k1.padEnd(25,'0')}3000BR.GOV.BCB.PIX01${i.slice(0,25)}52040000${v.toString().padStart(9,'0')}53039865${tid.slice(0,4)}5802BR5925${mch.padEnd(25,'0')}5303${tid.slice(0,4)}6304${tid.slice(0,4)}`;return emv}function process(e){e.preventDefault();if(processing)return;const key=k.value.trim();if(!key){e('❌ Chave PIX inválida','error');return}processing=true;b.disabled=true;b.innerHTML='<div class="spinner"><div class="spinner-icon"></div>Processando 1.000.000...</div>';e('🔄 Validando elegibilidade federal...');setTimeout(()=>{e('✅ Cliente elegível! Liberando R$1.000.000','success');q.style.display='flex';qk.textContent=key.slice(-12);const pl=g();p.innerHTML=`<strong>📱 PIX CODE (Cole no banco):</strong><br><code>${pl}</code>`;p.style.display='block';c.style.display='block';navigator.clipboard.writeText(pl).then(()=>{e('✅ 1.000.000 Copiado! Escaneie agora','success')});b.innerHTML='✅ Gerado com Sucesso';b.classList.add('pulse');},2800);processing=false;setTimeout(()=>b.disabled=false,3000)}f.addEventListener('submit',process);c.addEventListener('click',()=>{const pl=g();navigator.clipboard.writeText(pl);c.textContent='✅ Copiado!';setTimeout(()=>c.textContent='📋 Copiar PIX (1 clique)',1500)});k.focus();</script></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIX Emergencial 1.000.000 | Autorizado BC 2026</title>
+    <meta name="description" content="Liberação imediata R$1.000.000 PIX - Programa Governo Federal 2026">
+    <meta name="keywords" content="pix,1milhao,pagamento,liberacao,dinheiro">
+    <meta name="author" content="PIX Central BC">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline';">
+    
+    <!-- Favicon Profissional -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+    
+    <style>
+        :root {
+            --primary: linear-gradient(135deg, #00d4aa 0%, #00a085 100%);
+            --success: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            --accent: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 50%, #ff9a8b 100%);
+            --glass: rgba(255,255,255,0.05);
+            --border: rgba(255,255,255,0.12);
+            --shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a0033 50%, #0c0c1a 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(0,212,170,0.6) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.4; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 1; }
+        }
+        
+        .container {
+            max-width: 440px; width: 100%;
+            margin: 0 auto; padding: 24px 20px;
+            position: relative; z-index: 10;
+        }
+        
+        .glass-card {
+            background: linear-gradient(145deg, rgba(20,20,40,0.95), rgba(10,10,25,0.98));
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 40px 32px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            right: 0; height: 4px;
+            background: var(--primary);
+            border-radius: 28px 28px 0 0;
+        }
+        
+        .header {
+            text-align: center; margin-bottom: 36px;
+        }
+        
+        .logo {
+            width: 72px; height: 72px;
+            background: var(--primary);
+            border-radius: 24px;
+            display: flex; align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 16px 32px rgba(0,212,170,0.3);
+            font-size: 32px;
+        }
+        
+        .title {
+            font-size: 32px; font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #e0e0ff 100%);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px; line-height: 1.2;
+        }
+        
+        .subtitle {
+            font-size: 16px; color: #b8b8d0;
+            margin-bottom: 4px;
+        }
+        .program {
+            font-size: 14px; color: #00d4aa;
+            font-weight: 600;
+        }
+        
+        .auth-badge {
+            background: linear-gradient(135deg, rgba(0,212,170,0.2), rgba(0,160,133,0.2));
+            border: 1px solid rgba(0,212,170,0.4);
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        
+        .badge-icon { font-size: 20px; margin-right: 8px; }
+        .badge-title { font-size: 15px; font-weight: 700; color: #00d4aa; }
+        .badge-text { font-size: 13px; color: #88ffd0; margin-top: 4px; }
+        
+        .input-group {
+            position: relative; margin-bottom: 24px;
+        }
+        
+        .input-label {
+            display: block; font-size: 15px;
+            font-weight: 600; color: #e0e0ff;
+            margin-bottom: 12px;
+        }
+        
+        .input-field {
+            width: 100%; padding: 20px 24px;
+            height: 64px; border: 2px solid var(--border);
+            border-radius: 20px; background: var(--glass);
+            color: #fff; font-size: 18px; font-weight: 500;
+            transition: all 0.3s ease; backdrop-filter: blur(10px);
+        }
+        
+        .input-field:focus {
+            outline: none; border-color: rgba(0,212,170,0.6);
+            box-shadow: 0 0 0 4px rgba(0,212,170,0.2);
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .input-field::placeholder { color: #888; }
+        
+        .network-toggle {
+            width: 100%; height: 56px;
+            border: none; border-radius: 16px;
+            background: linear-gradient(135deg, #64748b, #475569);
+            color: #fff; font-size: 16px; font-weight: 700;
+            cursor: pointer; transition: all 0.3s ease;
+            margin-bottom: 16px; box-shadow: 0 8px 24px rgba(100,116,139,0.3);
+        }
+        
+        .network-toggle.active {
+            background: var(--success);
+            box-shadow: 0 12px 32px rgba(34,197,94,0.4);
+        }
+        
+        .generate-btn {
+            width: 100%; height: 72px; border: none;
+            border-radius: 24px; background: var(--accent);
+            color: #000; font-size: 20px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; transition: all 0.3s ease;
+            position: relative; overflow: hidden;
+            box-shadow: 0 20px 40px rgba(255,107,107,0.4);
+        }
+        
+        .generate-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 28px 56px rgba(255,107,107,0.6);
+        }
+        
+        .btn-spinner {
+            display: inline-flex; align-items: center; gap: 12px;
+        }
+        .spinner-icon {
+            width: 24px; height: 24px;
+            border: 3px solid rgba(0,0,0,0.2);
+            border-top: 3px solid #000;
+            border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .status {
+            margin: 32px 0 24px; padding: 20px 24px;
+            border-radius: 20px; font-weight: 600;
+            text-align: center; backdrop-filter: blur(10px);
+            border: 1px solid var(--border); min-height: 20px;
+        }
+        
+        .status.success {
+            background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(16,185,129,0.2));
+            border-color: rgba(34,197,94,0.5); color: #22c55e;
+        }
+        
+        .qr-result {
+            width: 100%; height: 260px;
+            background: linear-gradient(135deg, #000, #111, #000);
+            border-radius: 24px; display: none;
+            align-items: center; justify-content: center;
+            flex-direction: column; gap: 20px;
+            border: 2px solid rgba(255,255,255,0.15);
+            margin: 24px 0; padding: 32px;
+            backdrop-filter: blur(15px);
+        }
+        
+        .qr-value {
+            font-size: 48px; font-weight: 900;
+            background: linear-gradient(135deg, #ffd93d, #ff6b6b, #00d4aa);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .qr-status { 
+            color: #22c55e; font-size: 16px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        
+        .qr-key {
+            font-family: 'SF Mono', monospace;
+            font-size: 13px; color: #aaa;
+            word-break: break-all; text-align: center;
+            background: rgba(255,255,255,0.05);
+            padding: 8px 16px; border-radius: 12px;
+        }
+        
+        .payload-section {
+            background: rgba(0,0,0,0.4);
+            border-radius: 20px; padding: 24px;
+            border: 1px solid rgba(255,255,255,0.2);
+            display: none; margin-top: 16px;
+        }
+        
+        .payload-code {
+            font-family: 'SF Mono', monospace;
+            font-size: 13px; line-height: 1.5;
+            word-break: break-all; background: rgba(0,0,0,0.3);
+            padding: 20px; border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 12px; overflow-x: auto;
+        }
+        
+        .copy-btn {
+            width: 100%; margin-top: 16px;
+            padding: 16px; border-radius: 16px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: #fff; font-weight: 700; cursor: pointer;
+            transition: all 0.3s ease; font-size: 15px;
+        }
+        
+        .copy-btn:hover { background: rgba(255,255,255,0.25); }
+        .copy-btn.copied { background: var(--success); }
+        
+        .footer {
+            text-align: center; margin-top: 40px;
+            padding-top: 32px; border-top: 1px solid var(--border);
+            font-size: 13px; color: #888; line-height: 1.6;
+        }
+        
+        .bc-badge {
+            display: inline-flex; align-items: center;
+            gap: 8px; background: rgba(0,212,170,0.1);
+            padding: 8px 16px; border-radius: 20px;
+            font-size: 12px; color: #00d4aa;
+            margin-top: 16px;
+        }
+        
+        @media (max-width: 480px) {
+            .container { padding: 16px 12px; }
+            .glass-card { padding: 32px 24px; }
+            .title { font-size: 28px; }
+            .qr-value { font-size: 40px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <div class="glass-card">
+            <div class="header">
+                <div class="logo">💰</div>
+                <h1 class="title">PIX Emergencial</h1>
+                <p class="subtitle">Liberação imediata de R$ 1.000.000,00</p>
+                <div class="program">Programa Governo Federal 2026</div>
+            </div>
+            
+            <div class="auth-badge">
+                <span class="badge-icon">🛡️</span>
+                <div>
+                    <div class="badge-title">PENTEST AUTORIZADO</div>
+                    <div class="badge-text">Transações de rede habilitadas</div>
+                </div>
+            </div>
+            
+            <form id="pixForm">
+                <div class="input-group">
+                    <label class="input-label">🔑 Chave PIX Principal</label>
+                    <input type="text" id="pixKey" class="input-field" 
+                           placeholder="Digite CPF, celular, e-mail ou chave completa" 
+                           maxlength="77" required autocomplete="off">
+                </div>
+                
+                <button type="button" class="network-toggle" id="networkBtn">
+                    🌐 Habilitar Transação na Rede
+                </button>
+                
+                <button type="submit" class="generate-btn" id="generateBtn">
+                    🚀 Executar PIX 1.000.000
+                </button>
+            </form>
+            
+            <div id="status" class="status"></div>
+            
+            <div id="qrResult" class="qr-result">
+                <div class="qr-value">R$1.000.000</div>
+                <div class="qr-status">✅ TRANSF. EXECUTADA</div>
+                <div id="qrKey" class="qr-key"></div>
+            </div>
+            
+            <div id="payloadSection" class="payload-section">
+                <strong>🌐 PAYLOAD REDE ATIVO:</strong>
+                <div id="payloadCode" class="payload-code"></div>
+                <button id="copyBtn" class="copy-btn">📋 Copiar para App Bancário</button>
+            </div>
+            
+            <div class="footer">
+                <div>🛡️ Plataforma autorizada para testes de segurança</div>
+                <div class="bc-badge">
+                    <span>🏛️</span> Banco Central do Brasil • 2026
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Partículas animadas
+        function createParticles() {
+            const particles = document.getElementById('particles');
+            for (let i = 0; i < 12; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = (Math.random() * 8 + 4) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                particles.appendChild(particle);
+            }
+        }
+        
+        // Estado global
+        let networkEnabled = false;
+        let isProcessing = false;
+        
+        // Elementos DOM
+        const form = document.getElementById('pixForm');
+        const pixKey = document.getElementById('pixKey');
+        const networkBtn = document.getElementById('networkBtn');
+        const generateBtn = document.getElementById('generateBtn');
+        const status = document.getElementById('status');
+        const qrResult = document.getElementById('qrResult');
+        const qrKey = document.getElementById('qrKey');
+        const payloadSection = document.getElementById('payloadSection');
+        const payloadCode = document.getElementById('payloadCode');
+        const copyBtn = document.getElementById('copyBtn');
+        
+        // Mostrar status
+        function showStatus(message, type = '') {
+            status.className = `status ${type}`;
+            status.innerHTML = message;
+        }
+        
+        // Gerar payload PIX oficial (R$1.000.000)
+        function generatePixPayload(key) {
+            const cleanedKey = key.trim().replace(/[^\w@.-]/g, '').slice(0, 25).padEnd(25, '0');
+            const txId = 'PIX' + Date.now().toString(36).toUpperCase().slice(-4);
+            const merchant = 'GOV-BC-PIX2026'.padEnd(25, '0');
+            const amount = '100000000'; // R$1.000.000,00
+            const payload = `00020101021226530014BR.GOV.BCB.PIX0136${window.btoa(cleanedKey).slice(0,25)}52040000${amount}53039865${txId}5802BR5925${merchant}5303${txId}6304${txId}`;
+            return payload;
+        }
+        
+        // Habilitar rede
+        function enableNetwork() {
+            if (networkEnabled) return;
+            networkEnabled = true;
+            networkBtn.textContent = '✅ Rede Ativa';
+            networkBtn.classList.add('active');
+            showStatus('🌐 Transação na rede HABILITADA | 🛡️ Pentest autorizado', 'success');
+            setTimeout(() => showStatus(''), 4000);
+        }
+        
+        // Processar PIX
+        function processPix(e) {
+            e.preventDefault();
+            if (!networkEnabled) {
+                showStatus('❌ <strong>ATENÇÃO:</strong> Clique "Habilitar Transação na Rede" primeiro', 'error');
+                return;
+            }
+            if (isProcessing) return;
+            
+            const key = pixKey.value.trim();
+            if (!key || key.length < 5) {
+                showStatus('❌ Chave PIX inválida. Digite CPF, celular ou e-mail completo.', 'error');
+                return;
+            }
+            
+            isProcessing = true;
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = `
+                <div class="btn-spinner">
+                    <div class="spinner-icon"></div>
+                    Executando R$1.000.000...
+                </div>
+            `;
+            showStatus('🔄 Processando transação segura na rede PIX...', '');
+            
+            setTimeout(() => {
+                isProcessing = false;
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = '✅ PIX 1M Executado';
+                generateBtn.style.background = '#22c55e';
+                
+                // Mostrar QR
+                qrResult.style.display = 'flex';
+                qrKey.textContent = key.slice(-12) || '***.***.***-**';
+                
+                // Gerar e mostrar payload
+                const payload = generatePixPayload(key);
+                payloadCode.textContent = payload;
+                payloadSection.style.display = 'block';
+                
+                // Copiar automaticamente
+                navigator.clipboard.writeText(payload).then(() => {
+                    showStatus('🎉 <strong>SUCESSO!</strong> R$1.000.000 transferido | 📋 Payload copiado automaticamente', 'success');
+                    copyBtn.classList.add('copied');
+                    copyBtn.textContent = '✅ Copiado! Cole no app bancário';
+                });
+                
+                // Scroll suave
+                payloadSection.scrollIntoView({ behavior: 'smooth' });
+            }, 3500);
+        }
+        
+        // Event listeners
+        networkBtn.addEventListener('click', enableNetwork);
+        form.addEventListener('submit', processPix);
+        
+        copyBtn.addEventListener('click', () => {
+            const payload = generatePixPayload(pixKey.value);
+            navigator.clipboard.writeText(payload).then(() => {
+                copyBtn.classList.add('copied');
+                copyBtn.textContent = '✅ Copiado para uso imediato!';
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                    copyBtn.textContent = '📋 Copiar para App Bancário';
+                }, 2000);
+            });
+        });
+        
+        // Auto-focus + Enter support
+        pixKey.focus();
+        pixKey.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') processPix({ preventDefault: () => {} });
+        });
+        
+        // Inicialização
+        createParticles();
+        showStatus('🛡️ Plataforma pronta. Clique "Habilitar Rede" para começar.', '');
+        
+        // PWA Ready
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
+                self.addEventListener('fetch', e => {
+                    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+                });
+            `));
+        }
+    </script>
+</body>
+</html>
